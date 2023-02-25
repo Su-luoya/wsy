@@ -2,7 +2,7 @@
 # @Author: 昵称有六个字
 # @Date:   2023-02-23 23:56:28
 # @Last Modified by:   昵称有六个字
-# @Last Modified time: 2023-02-25 13:39:38
+# @Last Modified time: 2023-02-25 15:31:17
 import os
 import sys
 from typing import List
@@ -292,7 +292,9 @@ class Preprocess(object):
 
 if __name__ == "__main__":
     # cache = Cache()
-    # df_st: pd.DataFrame = cache.data(file_name="st.csv")
+    # df_st: pd.DataFrame = cache.data(file_name="st.csv").sort_values(["stock", "date"])
+    # df_st = df_st[pd.to_datetime(df_st["date"]) >= pd.to_datetime("2015-01-01")]
+    # df_st.to_csv("cache/st.csv", index=False)
     # df_listed = cache.data(file_name="ipo.csv")
     df_result: pd.DataFrame = Preprocess(
         st_file_name="st.csv",

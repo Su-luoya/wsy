@@ -2,23 +2,21 @@
 # @Author: 昵称有六个字
 # @Date:   2022-10-20 11:34:28
 # @Last Modified by:   昵称有六个字
-# @Last Modified time: 2023-02-23 18:22:28
-import contextlib
-import os
+# @Last Modified time: 2023-02-25 14:20:34
 from random import choice
 
 import pretty_errors
 from termcolor import colored, cprint
 
 
-def wprint(content, color=None):
+def wprint(content, color=None) -> None:
     """Colorful output
     Args:
         content (_type_): Anything you want.
         color (str): Choose from ['grey', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan'].
         Nothing passed in → random color.
     """
-    color_list = ["grey", "red", "green", "yellow", "blue", "magenta", "cyan"]
+    color_list: list[str] = ["grey", "red", "green", "yellow", "blue", "magenta", "cyan"]
     if color not in color_list:
         cprint(text=content, color=choice(color_list), attrs=["bold"])
     else:
@@ -35,29 +33,8 @@ def show():
     print(colored("", "white"), end="")
 
 
-def makedir(path=".", name="wsydir"):
-    """Make a empty directory
-
-    Args:
-        path (str): Directory Path. Defaults to '.'.
-        name (str): Directory Name. Defaults to 'wsydir'.
-    """
-    with contextlib.suppress(Exception):
-        os.mkdir(f"{path}\\{name}")
-
-
-def checkfile(path):
-    """Check File existence
-    Args:
-        path (str): file path
-    Returns:
-        Bool: exist → True
-    """
-    return os.path.isfile(path)
-
 
 if __name__ == "__main__":
-    print(checkfile(r"StockData Cache\stock data\stocks_info.csv"))
     # makedir(path='.', name='dir')
     wprint(123, "red")
     hide()

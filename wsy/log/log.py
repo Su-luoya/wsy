@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
+# -*- coding: ut8 -*-
 # @Author: 昵称有六个字
 # @Date:   2022-10-20 11:34:28
 # @Last Modified by:   昵称有六个字
-# @Last Modified time: 2023-02-25 14:40:34
+# @Last Modified time: 2023-02-25 14:59:34
+import contextlib
 import os
 import sys
 from random import choice
-from typing import TextIO
+from typing import Generator
 
 import pretty_errors
 from icecream import ic
@@ -43,7 +44,8 @@ def wprint(content, color=None) -> None:
     )
 
 
-class HidePrint:
+@contextlib.contextmanager
+def HidePrint() -> Generator[None, None, None]:
     """
     Hide Print
     --------
@@ -52,14 +54,22 @@ class HidePrint:
         >>> with HidePrint():
         >>>     print("Text that needs to be hidden.")
     """
-
-    def __enter__(self) -> None:
-        self._original_stdout: TextIO = sys.stdout
+    try:
+        original_stdout = sys.stdout
+        original_stderr = sys.stderr
         sys.stdout = open(os.devnull, "w")
-
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        sys.stderr = open(os.devnull, "w")
+        yield
+    except Exception as e:
         sys.stdout.close()
-        sys.stdout = self._original_stdout
+        sys.stdout = original_stdout  # type: ignore
+        print(e.args[0])
+        sys.stdout = open(os.devnull, "w")
+    finally:
+        sys.stdout.close()
+        sys.stderr.close()
+        sys.stdout = original_stdout  # type: ignore
+        sys.stderr = original_stderr  # type: ignore
 
 
 if __name__ == "__main__":
@@ -68,4 +78,5 @@ if __name__ == "__main__":
     wprint(123, "grey")
     with HidePrint():
         print(111)
+        ic(0)
     ic(__name__)
